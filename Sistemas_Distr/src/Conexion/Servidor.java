@@ -41,6 +41,8 @@ public class Servidor {
                 
                 mensaje = in.readUTF();
                 
+                //out.writeUTF("Hola Mundo desde el servidor");
+                
                 
         		String[] vectorDatos = mensaje.split(",");
         		for (int i = 0; i < vectorDatos.length; i++) {
@@ -67,29 +69,52 @@ public class Servidor {
                     
                     while (rs.next()) {
                     	String Valorcliente = rs.getString("VALOR");
-                    	System.out.println("Su saldo es de: " + Valorcliente);
+                    	out.writeUTF("Su saldo es de: " + Valorcliente);
                     }
         				break;
                     }
                     
     			case 2:{
                     cn.retirar(cuenta,valor);
-                    System.out.println("case 2: " + cuenta + " campo valor: " + valor);
+                    
+                    ResultSet rs = cn.SeleccionarCuenta(cuenta);
+                    
+                    while (rs.next()) {
+                    	String Valorcliente = rs.getString("VALOR");
+                    	out.writeUTF("Su nuevo saldo es de: " + Valorcliente);
+                    }
 
     				break;
     			}
+    			
+    			case 3:{
+                    cn.consignar(cuenta,valor);
+                    
+                    ResultSet rs = cn.SeleccionarCuenta(cuenta);
+                    
+                    while (rs.next()) {
+                    	String Valorcliente = rs.getString("VALOR");
+                    	out.writeUTF("Su nuevo saldo es de: " + Valorcliente);
+                    }
+
+    				break;
+    			}
+    			case 4:{
+                    	out.writeUTF("Gracias por utilizar nuestros servicios. ");
+
+    				break;
+    			}
+    			
     			default:{
     				System.out.println("Error default");
     			}
     			}
                     
-                
 
                 
                 
-                
                 sc.close();
-                System.out.println("Cliente desocnectado");
+                System.out.println("Cliente desconectado");
             }
             
             

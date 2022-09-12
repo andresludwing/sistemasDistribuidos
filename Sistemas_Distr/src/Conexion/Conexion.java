@@ -18,6 +18,9 @@ public class Conexion {
     String password="";
     String driver="com.mysql.cj.jdbc.Driver";
     Connection cx;
+	Connection cn;
+	PreparedStatement pst;
+	ResultSet rs = null;
 
     public Conexion() {
     }
@@ -44,10 +47,6 @@ public class Conexion {
     }
     
 	public ResultSet SeleccionarCuenta(int cliente) {
-		
-		Connection cn;
-		PreparedStatement pst;
-		ResultSet rs = null;
 		cn = conectar();
 		try {
 			pst = cn.prepareStatement("SELECT VALOR FROM customers WHERE CUENTA=?");
@@ -61,16 +60,30 @@ public class Conexion {
 	
 	
 	public void retirar(int cliente, int valor) {
-		System.out.println("Valor consulta eliminar: " + cliente + valor);
-		Connection cn;
-		PreparedStatement pst;
-		int rs = 0;
 		cn = conectar();
+		PreparedStatement preparar = null;
+		String query = "UPDATE customers SET VALOR = VALOR - " + valor +" WHERE CUENTA = " + cliente;
 		try {
-			pst = cn.prepareStatement("UPDATE customers SET VALOR = VALOR - 70000 WHERE CUENTA=?");
-			pst.setLong(1, cliente);
-			rs = pst.executeUpdate();
+			preparar=cn.prepareStatement(query);
+			preparar.executeUpdate();
 		} catch(Exception e) {
+			System.out.println(e);
+			
+		}
+
+	}
+	
+	
+	
+	public void consignar(int cliente, int valor) {
+		cn = conectar();
+		PreparedStatement preparar = null;
+		String query = "UPDATE customers SET VALOR = VALOR + " + valor +" WHERE CUENTA = " + cliente;
+		try {
+			preparar=cn.prepareStatement(query);
+			preparar.executeUpdate();
+		} catch(Exception e) {
+			System.out.println(e);
 			
 		}
 

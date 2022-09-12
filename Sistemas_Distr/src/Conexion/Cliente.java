@@ -24,35 +24,39 @@ public class Cliente {
 		
 		try {
 			
-			System.out.println("Ingrese una opcion:\n 1. Consultar \n 2. Retirar \n 3. Consignar  \n 4. Salir ");
-			
-			opcion = teclado.next();
-			
 			Socket sc = new Socket(HOST, puerto);
 			in = new DataInputStream(sc.getInputStream());
 			out = new DataOutputStream(sc.getOutputStream());
 			
+			System.out.println("Ingrese una opcion:\n 1. Consultar \n 2. Retirar \n 3. Consignar  \n 4. Salir ");
+			
+			opcion = teclado.next();
+            
 			if ("4".equals(opcion)) {
-				/*
-				 * enviar mensaje de fin al server crrar el socket cliente
-				 */
-				System.out.println("Gracias por utilizar nuestros servicios. ");
+				
+				valor = "00000000000"; // consultar
+			    cuenta = "00000000000"; // consultar
+				
 			} else {
 				System.out.println("Ingrese la cuenta ");
 				cuenta = teclado.next();
 				if ( "2".equals(opcion) ||  "3".equals(opcion)) {
 					System.out.println("Ingrese el valor ");
 					valor = teclado.next();
+
+					
 				} else
 					valor = "00000000000"; // consultar
+
+				
 			}
 			
-			mensaje = opcion + "," + cuenta + "," + valor;
-			
+		    mensaje = opcion + "," + cuenta + "," + valor;
 			out.writeUTF(mensaje);
-		
-			String message = in.readUTF();
-			
+			mensaje = in.readUTF();
+            
+            System.out.println(mensaje);
+            
 			sc.close();
 			
 			
@@ -65,17 +69,4 @@ public class Cliente {
 
 	}
 	
-	/*public static String transacciones (String dato) {
-		System.out.println("Dato recibido en trasacciones " + dato);
-		String value = dato;
-		switch (dato) {
-		case value: {
-			
-		}
-			throw new IllegalArgumentException("Unexpected value: " + value);
-		} 
-		
-		return "";
-	}*/
-
 }
